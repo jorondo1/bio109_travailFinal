@@ -27,7 +27,7 @@ Tous les états peuvent changer, mais $T \longleftrightarrow B$ n'est pas possib
 'R' si aucun de ces critères n'est rempli
 
 ```{r etats}
-quadrats <- read.csv2("BIO109/cours5/donnees/quadrats.txt")
+quadrats <- read.csv2("quadrats.txt")
 
 species <- colnames(quadrats[,3:9])
 
@@ -48,7 +48,7 @@ summary(etatsMx$etat)
 ## Matrice de transition entre les différents états
 Elle montre la probabilité d'obtenir un état au temps $t+1$ étant donné l'état au temps $t$.
 ```{r}
-transMx <- read.table("BIO109/cours5/donnees/matrice_transitions.txt") 
+transMx <- read.table("matrice_transitions.txt") 
 etats <- c("B","M","T","R")
 rownames(transMx) <- etats
 colnames(transMx) <- etats

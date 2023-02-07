@@ -1,3 +1,5 @@
+Auteurs: Jonathan Rondeau-Leclaire, Chloé Girard
+
 PROGRAMME etats
 LIRE quadrats.txt
 SI (abba > 0 | piru > 0) & acsa==0 & beal==0 & acpe==0 & fagr==0
