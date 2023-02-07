@@ -15,12 +15,15 @@ PROGRAMME fonctionEtat
 LIRE etats
 LIRE matrice_transitions.txt
 etats.fun()
-	Fonction pour tirer au hasard l'état t+1
+	# Fonction pour tirer au hasard l'état t+1
 	Caractère (etat_0)
-	DRAW etat_t1
-	RETOURNER etat_t
+	DRAW etatT1
+	RETOURNER etatT
 
 simulation.fun()
 	Fonction pour simuler N pas de temps
 	Entier Matrice (N, mX)
-	
+	POUR compteur <- 0, N, PAS 1
+		etatTMatrice <- etat.fun(etatT)
+		???????????
+	FIN
