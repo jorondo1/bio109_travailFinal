@@ -75,14 +75,14 @@ simul.fun <- function(N, mx){
   for (i in 0:N){
       if (i==0){pas <- "etat_0"}
       # création d'une vecteur des états t+1 :
-      pasVecteur <- sapply(mx[[pas]], etat.fun) # tirage au sort
+      pasVecteur <- unlist(lapply(mx[[pas]], etat.fun)) # tirage au sort
       nom <- paste0("etat_",i+1) # création du nouveau nom de l'état t+1
       mx[[nom]] <- as.factor(pasVecteur) # ajout d'une colonne dans la matrice
       pas <- nom # le temps t+1 devient le temps t dans la boucle
   }
   return(mx)
 }
-simulation <- simul.fun(10,etatsMx)
+simulation <- simul.fun(5,etatsMx)
 summary(simulation %>% select(contains("etat")))
 
 ```
