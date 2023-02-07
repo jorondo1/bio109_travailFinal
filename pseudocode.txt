@@ -1,0 +1,26 @@
+PROGRAMME etats
+LIRE quadrats.txt
+SI (abba > 0 | piru > 0) & acsa==0 & beal==0 & acpe==0 & fagr==0
+	ALORS etat = "B"
+	SINON SI abba==0 & piru==0 & (acsa>0 | beal>0 | acpe>0 | fagr>0)
+		ALORS etat = "T"
+		SINON SI (abba > 0 | piru > 0) & (acsa>0 | beal>0 | acpe>0 | fagr>0)
+			ALORS etat = "M"
+			SINON etat = "R"
+ECRIRE etats
+FIN
+
+
+PROGRAMME fonctionEtat
+LIRE etats
+LIRE matrice_transitions.txt
+etats.fun()
+	Fonction pour tirer au hasard l'état t+1
+	Caractère (etat_0)
+	DRAW etat_t1
+	RETOURNER etat_t
+
+simulation.fun()
+	Fonction pour simuler N pas de temps
+	Entier Matrice (N, mX)
+	

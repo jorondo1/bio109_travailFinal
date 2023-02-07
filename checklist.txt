@@ -1,0 +1,18 @@
+QUESTION
+Quelle sera la distribution de la forêt mixte au sein de la Réserve écologique des Montagnes vertes dans 75 ans?
+
+CHECKLIST
+
+Dossier PROJET
+	1. Abondances –> états de départ
+	2. etats <- Tirer aléatoirement t+1 en fonction de la matrice de transition
+	3. write function de simutation sur t_{0–>N}
+	4. exec 10 et 100 pas de temps + system.time()
+	5. utiliser l'output pour répondre aux 3 questions https://econumuds.github.io/BIO109/cours4/#71
+
+
+Reminder:
+5 ans entre chaque période de temps
+P(B_{t+1} | T_t)
+
+
