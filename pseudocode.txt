@@ -19,7 +19,7 @@ LIRE matrice_transitions.txt
 etats.fun()
 	# Fonction pour tirer au hasard l'état t+1
 	Caractère (etat_0)
-	DRAW etatT1
+	DRAW etatT1 ou COMPUTE N_t1 # dans les notes de cours c'est écrit d'utiliser DRAW, mais dans la page de dépôt c'est écrit COMPUTE N_t1
 	RETOURNER etatT
 
 simulation.fun()

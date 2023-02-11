@@ -7,7 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 library(pacman)
-p_load(magrittr, dplyr)
+p_load(tidyverse)
 ```
 ### types de forêt
 R: rien 
@@ -31,18 +31,14 @@ quadrats <- read.csv2("quadrats.txt")
 
 species <- colnames(quadrats[,3:9])
 
-# états possibles de la forêt
-etats <- c("B","M","T","R")
-
 # critères des états
 etatsMx <- quadrats %>% 
   mutate(etat_0 = as.factor( # créer la variable etat
     case_when( # la variable est déterminée conditionnellement
-      (abba > 0 | piru > 0) & acsa==0 & beal==0 & acpe==0 & fagr==0 ~ "B", # boréale
+      (abba > 0 | piru > 0) & acsa==0 & beal==0 & acpe==0 & fagr==0  ~ "B", # boréale
       abba==0 & piru==0 & (acsa>0 | beal>0 | acpe>0 | fagr>0) ~ "T", # tempérée
       (abba > 0 | piru > 0) & (acsa>0 | beal>0 | acpe>0 | fagr>0) ~ "M", # mixte
       TRUE ~ "R"))) %>% # sinon, rien!
-  mutate(etat_0 = factor(etat_0, levels = etats)) %>% 
   dplyr::select(etat_0, borx, bory) # on garde seulement les états et les coordonnées
 
 summary(etatsMx$etat)
@@ -53,67 +49,42 @@ summary(etatsMx$etat)
 Elle montre la probabilité d'obtenir un état au temps $t+1$ étant donné l'état au temps $t$.
 ```{r}
 transMx <- read.table("matrice_transitions.txt") 
+etats <- c("B","M","T","R")
 rownames(transMx) <- etats
 colnames(transMx) <- etats
 transMx
 ```
 
-
 ## Fonction pour tirer au hasard l'état $t+1$   
 ```{r fonction}
+
 etat.fun <- function(etat) {
-  res <- rmultinom(n=1, size=1, 
-                   prob=transMx[etat,])
-  return(etats[which(res==1)])
+  p <- transMx[etat,]
+  res <- rmultinom(n=1, size=1, prob=p)
+  etats[which(res==1)]
 }
+
+# par exemple, on tire l'état au temps t+1 d'un quadrat de forêt Boréale au temps t:
+etat.fun("B")
 ```
 
 # 3. Fonction de simulation rapportant la composition sur N pas de temps
 ```{r simulation}
-simul.fun2 <- function(N, mx){
-  set.seed(123)
-  for (i in 0:(N-1)){
-    if (i==0){pas <- "etat_0"}
-    # création d'une vecteur des états t+1 :
-    nom <- paste0("etat_",i+1) # création d'un nom pour l'état t+1
-    etat_t <- mx[[pas]]
-    liste <- list() # création d'une liste vide à populer
-    for (j in 1:length(etat_t)){ 
-      liste[[j]] <- etat.fun(etat_t[j]) # population de la liste avec les tirages
-    }
-    mx[[nom]] <- factor(unlist(liste), levels = etats)
-    pas <- nom # le temps t+1 devient le temps t dans la boucle
-    #remove(liste)
-  }
-  return(mx)
-}
-```
-
-# Alternativement on peut éviter la boucle grâce à sapply() :
-```{r simulation}
 simul.fun <- function(N, mx){
-  set.seed(123)
-  for (i in 0:(N-1)){
+  for (i in 0:N){
       if (i==0){pas <- "etat_0"}
       # création d'une vecteur des états t+1 :
-      nom <- paste0("etat_",i+1) # création d'un nom
-            # ajout d'une colonne dans la matrice: 
-      mx[[nom]] <- factor(unlist( # sapply crée des listes, on veut un vecteur
-          sapply(mx[[pas]], etat.fun)), # tirage au sort avec notre fonction
-                          levels = etats) # pour conserver l'ordre des facteurs
-      
+      pasVecteur <- unlist(lapply(mx[[pas]], etat.fun)) # tirage au sort
+      nom <- paste0("etat_",i+1) # création du nouveau nom de l'état t+1
+      mx[[nom]] <- as.factor(pasVecteur) # ajout d'une colonne dans la matrice
       pas <- nom # le temps t+1 devient le temps t dans la boucle
   }
   return(mx)
 }
-
-simulation <- simul.fun(10,etatsMx) 
+simulation <- simul.fun(5,etatsMx)
 summary(simulation %>% select(contains("etat")))
 
-system.time(simul.fun(100,etatsMx))
-system.time(simul.fun2(100,etatsMx))
 ```
-
 
 
 
