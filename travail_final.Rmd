@@ -33,7 +33,7 @@ species <- colnames(quadrats[,3:9])
 
 # états possibles de la forêt
 etats <- c("B","M","T","R")
-
+#!!!!!!!! redo
 # critères des états
 etatsMx <- quadrats %>% 
   mutate(etat_0 = as.factor( # créer la variable etat
@@ -42,10 +42,8 @@ etatsMx <- quadrats %>%
       abba==0 & piru==0 & (acsa>0 | beal>0 | acpe>0 | fagr>0) ~ "T", # tempérée
       (abba > 0 | piru > 0) & (acsa>0 | beal>0 | acpe>0 | fagr>0) ~ "M", # mixte
       TRUE ~ "R"))) %>% # sinon, rien!
-  mutate(etat_0 = factor(etat_0, levels = etats)) %>% 
-  dplyr::select(etat_0, borx, bory) # on garde seulement les états et les coordonnées
-
-summary(etatsMx$etat)
+  mutate(etat_0 = factor(etat_0, levels = etats)) %>% dplyr::select(etat_0)
+summary(etatsMx)
 ```
 
 # 2. L'état $t+1$
@@ -70,18 +68,20 @@ etat.fun <- function(etat) {
 
 # 3. Fonction de simulation rapportant la composition sur N pas de temps
 ```{r simulation}
-simul.fun2 <- function(N, mx){
+simul.fun2 <- function(N,   # nombre de pas de temps 
+                       mx){ # matrice de l'état initial
   set.seed(123)
-  for (i in 0:(N-1)){
+  for (i in 0:(N-1)){ # de l'état 0 à l'état 
     if (i==0){pas <- "etat_0"}
     # création d'une vecteur des états t+1 :
     nom <- paste0("etat_",i+1) # création d'un nom pour l'état t+1
-    etat_t <- mx[[pas]]
+    etat_t <- mx[[pas]] # extraire le vecteur du temps t
     liste <- list() # création d'une liste vide à populer
-    for (j in 1:length(etat_t)){ 
-      liste[[j]] <- etat.fun(etat_t[j]) # population de la liste avec les tirages
+    for (j in 1:length(etat_t)){ # populer la liste avec notre fonction
+      liste[[j]] <- etat.fun(etat_t[j]) # prédire le temps t+1
     }
-    mx[[nom]] <- factor(unlist(liste), levels = etats)
+    mx[[nom]] <- factor(unlist(liste),  # transformer en vecteur et l'ajouter 
+                        levels = etats) # à la matrice
     pas <- nom # le temps t+1 devient le temps t dans la boucle
     #remove(liste)
   }
@@ -93,7 +93,7 @@ simul.fun2 <- function(N, mx){
 ```{r simulation}
 simul.fun <- function(N, mx){
   set.seed(123)
-  for (i in 0:(N-1)){
+  for (i in 0:(N-1)){ # parce qu'on commence à l'état 0 et on cherche t+1
       if (i==0){pas <- "etat_0"}
       # création d'une vecteur des états t+1 :
       nom <- paste0("etat_",i+1) # création d'un nom
@@ -101,20 +101,21 @@ simul.fun <- function(N, mx){
       mx[[nom]] <- factor(unlist( # sapply crée des listes, on veut un vecteur
           sapply(mx[[pas]], etat.fun)), # tirage au sort avec notre fonction
                           levels = etats) # pour conserver l'ordre des facteurs
-      
       pas <- nom # le temps t+1 devient le temps t dans la boucle
   }
   return(mx)
 }
 
-simulation <- simul.fun(10,etatsMx) 
-summary(simulation %>% select(contains("etat")))
+simulation_100 <- simul.fun(100,etatsMx) 
+#summary(simulation %>% select(contains("etat")))
+composition <- summary(simulation_100)
+apply(composition, 2, function(x){x/sum(x)})
 
+system.time(simul.fun(10,etatsMx))
 system.time(simul.fun(100,etatsMx))
-system.time(simul.fun2(100,etatsMx))
 ```
 
-
+# 5. Questions à répondre
 
 
 
