@@ -102,7 +102,8 @@ simul.fun <- function(N, mx){
           sapply(mx[[pas]], etat.fun)), # tirage au sort avec notre fonction
                           levels = etats) # pour conserver l'ordre des facteurs
       pas <- nom # le temps t+1 devient le temps t dans la boucle
-  }
+  ###! summarize and create new df (created before loop?)
+      }
   return(mx)
 }
 
