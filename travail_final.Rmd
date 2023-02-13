@@ -5,10 +5,6 @@ date: "31/01/2023"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-library(pacman)
-p_load(magrittr, dplyr)
-```
 ### types de forêt
 R: rien 
 T: Tempérée (Érables, etc)
@@ -17,7 +13,7 @@ B: Boréale
 Tous les états peuvent changer, mais $T \longleftrightarrow B$ n'est pas possible.
 
 ### Objectif du travail final
-Écrire un programme calculant les changements au sein de la communauté d'arbres de la forêt au fil du temps.
+Écrire un programme calculant les changements au sein de la communauté d'arbres de la forêt au fil du pas.
 
 # 1. Transformation des abondances en états de départ
 ### Conditions des différents états de la forêt
@@ -35,7 +31,7 @@ species <- colnames(quadrats[,3:9])
 etats <- c("B","M","T","R")
 #!!!!!!!! redo
 # critères des états
-etatsMx <- quadrats %>% 
+etatsMx <- quadrats %>% # !!!!!!!!!!!!!!!!!!!!! DOIT ETRE UN VECTEUR!
   mutate(etat_0 = as.factor( # créer la variable etat
     case_when( # la variable est déterminée conditionnellement
       (abba > 0 | piru > 0) & acsa==0 & beal==0 & acpe==0 & fagr==0 ~ "B", # boréale
@@ -48,7 +44,7 @@ summary(etatsMx)
 
 # 2. L'état $t+1$
 ## Matrice de transition entre les différents états
-Elle montre la probabilité d'obtenir un état au temps $t+1$ étant donné l'état au temps $t$.
+Elle montre la probabilité d'obtenir un état au pas $t+1$ étant donné l'état au pas $t$.
 ```{r}
 transMx <- read.table("matrice_transitions.txt") 
 rownames(transMx) <- etats
@@ -60,54 +56,105 @@ transMx
 ## Fonction pour tirer au hasard l'état $t+1$   
 ```{r fonction}
 etat.fun <- function(etat) {
-  res <- rmultinom(n=1, size=1, 
-                   prob=transMx[etat,])
+  res <- rmultinom(n=1, size=1, transMx[etat,])
   return(etats[which(res==1)])
 }
 ```
 
-# 3. Fonction de simulation rapportant la composition sur N pas de temps
+# 3. Fonction de simulation rapportant la composition sur N pas de pas
 ```{r simulation}
-simul.fun2 <- function(N,   # nombre de pas de temps 
-                       mx){ # matrice de l'état initial
+simul.fun2 <- function(N,   # nombre de pas de pas 
+                       pas_0){ # vecteur de l'état initial
   set.seed(123)
-  for (i in 0:(N-1)){ # de l'état 0 à l'état 
-    if (i==0){pas <- "etat_0"}
-    # création d'une vecteur des états t+1 :
-    nom <- paste0("etat_",i+1) # création d'un nom pour l'état t+1
-    etat_t <- mx[[pas]] # extraire le vecteur du temps t
+  # créer une matrice 4xN
+  composition <- matrix(nr = length(etats), nc = N)
+  pas_t <- pas_0 # extraire le vecteur du pas t
+  liste_pas <- matrix(nr=1,nc=N)
+  for (i in 1:(N)){
+    # création d'une vecteur des pas t+1 :
     liste <- list() # création d'une liste vide à populer
-    for (j in 1:length(etat_t)){ # populer la liste avec notre fonction
-      liste[[j]] <- etat.fun(etat_t[j]) # prédire le temps t+1
-    }
-    mx[[nom]] <- factor(unlist(liste),  # transformer en vecteur et l'ajouter 
+    for (j in 1:length(pas_t)){ # populer la liste avec notre fonction
+      liste[[j]] <- etat.fun(pas_t[j]) # prédire le pas t+1
+      }
+    pas_plus1 <- factor(unlist(liste),  # transformer en vecteur et l'ajouter 
                         levels = etats) # à la matrice
-    pas <- nom # le temps t+1 devient le temps t dans la boucle
-    #remove(liste)
+    comp_t1 <- as.vector(table(pas_plus1)) # composition (proportion) au pas t+1
+    composition[,i] <- comp_t1 # sauvegarder la composition dans la matrice
+    liste_pas[,i] <- paste0("pas_",i)
+    pas_t <- pas_plus1 # avancer dans le temps
   }
-  return(mx)
+  rownames(composition) <- etats
+  colnames(composition) <- liste_pas
+  return(composition/length(pas_0)) # diviser par le nombre total de quadrats pour
+                                  # obtenir la proportion de la forêt complète
 }
+
+simulation_10 <- simul.fun2(10,etatsMx$etat_0)
+simulation_100 <- simul.fun2(100,etatsMx$etat_0)
 ```
+
+# 4. Exécuter la fonction sur 10 et 100 pas de pas et évaluer le pas de calcul avec system.time()
+
+```{r}
+system.time(simul.fun2(10,etatsMx$etat_0))
+system.time(simul.fun2(100,etatsMx$etat_0))
+```
+# 5. Questions à répondre
+
+
+```{r}
+# i) qu'advient-il à 25, 50, 75ans?
+### Pusique le pas de temps est de 5 ans, on cherche les pas de temps 5, 10 et 15
+subset(simulation_100, 
+       subset = grepl("M",etats),  # sélectionner la rangée M
+       select = c("pas_5", "pas_10", "pas_15")) # extraire les colonnes d'intérêt
+
+# ii) qu'advient-il à 75 ans?
+
+### On suppose une forêt de 500 quadrats de fôret mixte au pas de temps 0
+foretMixte <- factor(rep("M",500), levels=etats)
+
+### exécuter la simulation sur cette forêt
+(simulation_mixte <- simul.fun2(15, foretMixte))
+### après 75 ans (15 pas de temps), la forêt devient 22% mixte, 69,8% tempérée,
+### et 8,2% "rien".
+
+# iii) 
+foretTemp <- factor(rep("T",500), levels=etats)
+simulation_temp <- simul.fun2(15, foretTemp)
+subset(simulation_temp, select = c("pas_2", "pas_5", "pas_10", "pas_15")) |>
+  barplot()
+
+```
+
+
+
+
+
+
+
+
+
 
 # Alternativement on peut éviter la boucle grâce à sapply() :
 ```{r simulation}
-simul.fun <- function(N, mx){
+simul.fun <- function(N, pas_0){
   set.seed(123)
   for (i in 0:(N-1)){ # parce qu'on commence à l'état 0 et on cherche t+1
       if (i==0){pas <- "etat_0"}
       # création d'une vecteur des états t+1 :
-      nom <- paste0("etat_",i+1) # création d'un nom
+      nom <- paste0("pas_",i+1) # création d'un nom
             # ajout d'une colonne dans la matrice: 
-      mx[[nom]] <- factor(unlist( # sapply crée des listes, on veut un vecteur
-          sapply(mx[[pas]], etat.fun)), # tirage au sort avec notre fonction
+      pas_0[[nom]] <- factor(unlist( # sapply crée des listes, on veut un vecteur
+          sapply(pas_0[[pas]], etat.fun)), # tirage au sort avec notre fonction
                           levels = etats) # pour conserver l'ordre des facteurs
-      pas <- nom # le temps t+1 devient le temps t dans la boucle
+      pas <- nom # le pas t+1 devient le pas t dans la boucle
   ###! summarize and create new df (created before loop?)
       }
-  return(mx)
+  return(pas_0)
 }
 
-simulation_100 <- simul.fun(100,etatsMx) 
+simulation_100 <- simul.fun(10,etatsMx) 
 #summary(simulation %>% select(contains("etat")))
 composition <- summary(simulation_100)
 apply(composition, 2, function(x){x/sum(x)})
@@ -115,8 +162,3 @@ apply(composition, 2, function(x){x/sum(x)})
 system.time(simul.fun(10,etatsMx))
 system.time(simul.fun(100,etatsMx))
 ```
-
-# 5. Questions à répondre
-
-
-
