@@ -12,10 +12,6 @@ SI (abba > 0 | piru > 0) & acsa==0 & beal==0 & acpe==0 & fagr==0
 			SINON etat <- "R"
 FIN
 
-LIRE matrice_transitions.txt
-ECRIRE transmx
-
-
 
 PROGRAMME fonctionEtat	   # Fonction pour tirer au hasard l'état t+1
 ECRIRE etat.fun()
@@ -25,6 +21,7 @@ RETOURNER etat
 		
 *****
 DRAW etatT1 ou COMPUTE N_t1 # dans les notes de cours c'est écrit d'utiliser DRAW, mais dans la page de dépôt c'est écrit COMPUTE N_t1
+LIRE matrice_transitions.txt
 *****
 
 
