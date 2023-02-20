@@ -26,14 +26,16 @@ etat.fun()
 PROGRAMME simul.fun2
 # Fonction pour simuler N pas de temps
 
-fonction.simululation()	   
+fonction.simululation(N)	   
 	DEFINIR matriceComposition
 	LIRE etat_0
-	
-	POUR i in 1:(N)
-		POUR j in 1:longueur(pas_t)
-		DEFINIR t+1
-		DEFINIR pas_t comme t+1
+	observation <- longueur(etat_0)
+	POUR i <- 1, N, PAS 1
+		POUR j <- 1, observation, PAS 1
+		etat_1 <- etat.fun(etat_0)
+		
+		
+		
 		RETOURNER ???
 ECRIRE simulation_10
 ECRIRE simulation_100
