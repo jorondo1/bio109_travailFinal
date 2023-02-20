@@ -14,6 +14,7 @@ FIN
 
 
 PROGRAMME fonctionEtat	   # Fonction pour tirer au hasard l'état t+1
+LIRE matrice_transitions.txt
 ECRIRE etat.fun()
 	DEFINIR p
 	DEFINIR res
@@ -21,7 +22,6 @@ RETOURNER etat
 		
 *****
 DRAW etatT1 ou COMPUTE N_t1 # dans les notes de cours c'est écrit d'utiliser DRAW, mais dans la page de dépôt c'est écrit COMPUTE N_t1
-LIRE matrice_transitions.txt
 *****
 
 
