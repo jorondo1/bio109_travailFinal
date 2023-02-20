@@ -1,9 +1,9 @@
 Auteurs: Jonathan Rondeau-Leclaire, Chloé Girard
 
-PROGRAMME chargement_données
+PROGRAMME chargement_données	
 LIRE quadrats.txt
 
-SI (abba > 0 | piru > 0) & acsa==0 & beal==0 & acpe==0 & fagr==0
+SI (abba > 0 | piru > 0) & acsa==0 & beal==0 & acpe==0 & fagr==0      # Définition des conditions
 	ALORS etat_0 <- "B"
 	SINON SI abba==0 & piru==0 & (acsa>0 | beal>0 | acpe>0 | fagr>0)
 		ALORS etat_0 <- "T"
@@ -26,7 +26,7 @@ etat.fun()
 PROGRAMME simul.fun2
 # Fonction pour simuler N pas de temps
 
-fonction.simululation(N, etat_0)	   
+fonction.simululation(N, etat_0) 	# N pas de temps à partir de l'état 0.   
 	DEFINIR matriceComposition
 	LIRE etat_0
 	observation <- longueur(etat_0)
@@ -40,5 +40,5 @@ fonction.simululation(N, etat_0)
 	matriceComposition <- composition_i
 	RETOURNER matriceComposition
 
-fonction.simulation(N=10, etat_0)
+fonction.simulation(N=10, etat_0)	# Exécution des simulations.
 fonction.simulation(N=100, etat_0)
