@@ -13,7 +13,9 @@ SI (abba > 0 | piru > 0) & acsa==0 & beal==0 & acpe==0 & fagr==0
 FIN
 
 
-PROGRAMME fonctionEtat	   # Fonction pour tirer au hasard l'état t+1
+PROGRAMME fonctionEtat	  
+# Fonction pour tirer au hasard l'état t+1
+
 LIRE matrice_transitions.txt
 ECRIRE etat.fun()
 	DEFINIR p
@@ -26,7 +28,9 @@ DRAW etatT1 ou COMPUTE N_t1 # dans les notes de cours c'est écrit d'utiliser DR
 
 
 PROGRAMME simul.fun2
-ECRIRE simul.fun2()	   # Fonction pour simuler N pas de temps
+# Fonction pour simuler N pas de temps
+
+ECRIRE simul.fun2()	   
 	SEED (123)
 		DEFINIR composition
 		DEFINIR pas_t
