@@ -1,6 +1,6 @@
 Auteurs: Jonathan Rondeau-Leclaire, Chloé Girard
 
-PROGRAMME etat_0
+PROGRAMME chargement_données
 LIRE quadrats.txt
 
 ECRIRE etats
@@ -15,9 +15,6 @@ SI (abba > 0 | piru > 0) & acsa==0 & beal==0 & acpe==0 & fagr==0
 			SINON etat = "R"
 FIN
 
-
-
-PROGRAMME transmx
 LIRE matrice_transitions.txt
 ECRIRE transmx
 
@@ -44,6 +41,8 @@ ECRIRE simul.fun2()	   # Fonction pour simuler N pas de temps
 			POUR j in 1:longueur(pas_t)
 			}
 			DEFINIR t+1
+		DEFINIR pas_t comme t+1
+	RETOURNER
 	
 		
 
