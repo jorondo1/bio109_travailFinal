@@ -13,7 +13,7 @@ SI (abba > 0 | piru > 0) & acsa==0 & beal==0 & acpe==0 & fagr==0
 FIN
 
 
-PROGRAMME fonctionEtat	  
+PROGRAMME fonction_etat	  
 # Fonction pour tirer au hasard l'état t+1
 
 LIRE matrice_transitions.txt
