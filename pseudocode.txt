@@ -5,7 +5,7 @@ LIRE quadrats.txt
 
 ECRIRE etats
 
-ECRIRE etat_0
+ECRIRE etat_0()
 SI (abba > 0 | piru > 0) & acsa==0 & beal==0 & acpe==0 & fagr==0
 	ALORS etat = "B"
 	SINON SI abba==0 & piru==0 & (acsa>0 | beal>0 | acpe>0 | fagr>0)
@@ -23,19 +23,24 @@ ECRIRE transmx
 
 
 
-PROGRAMME fonctionEtat
-ECRIRE etats.fun()
+PROGRAMME fonctionEtat	   # Fonction pour tirer au hasard l'état t+1
+ECRIRE etat.fun()
+	DEFINIR p
+	DEFINIR res
+RETOURNER etat
 	
 	
-	
-	
-	# Fonction pour tirer au hasard l'état t+1
-	Caractère (etat_0)
-	DRAW etatT1 ou COMPUTE N_t1 # dans les notes de cours c'est écrit d'utiliser DRAW, mais dans la page de dépôt c'est écrit COMPUTE N_t1
-	RETOURNER etatT
+*****
+DRAW etatT1 ou COMPUTE N_t1 # dans les notes de cours c'est écrit d'utiliser DRAW, mais dans la page de dépôt c'est écrit COMPUTE N_t1
+*****
 
-simulation.fun()
-	Fonction pour simuler N pas de temps
+
+PROGRAMME simul.fun2
+ECRIRE simul.fun2()	   # Fonction pour simuler N pas de temps
+
+	
+	
+	
 	Entier Matrice (N, mX)
 	POUR compteur <- 0, N, PAS 1
 		etatTMatrice <- etat.fun(etatT)
