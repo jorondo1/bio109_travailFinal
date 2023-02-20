@@ -1,11 +1,14 @@
-source("question1.R")
-source("question2.R")
-source("question3.R")
-
 ###############################################################################
 # 4. Exécuter la fonction sur 10 et 100 pas de temps, #########################
 #### et évaluer le pas de calcul avec system.time().  #########################
 ###############################################################################
+
+# Charger les données
+source("question1.R")
+
+# Créer les fonctions pertinentes
+source("question2.R")
+source("question3.R")
 
 simulation_10 <- simul.fun(10,etat_0)
 simulation_100 <- simul.fun(100,etat_0)

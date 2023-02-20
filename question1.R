@@ -33,3 +33,12 @@ etat_0 <- factor(
   levels=etats) # pour s'assurer que les facteurs gardent une indexation constante,
 # évite un bogue dans la prédiction lorsqu'on prédit un pas de temps
 # où un état est absents
+
+# Matrice de transition entre les différents états
+# Probabilité d'obtenir un état au pas t+1 étant donné l'état au pas de tempst.
+transMx <- read.table("matrice_transitions.txt") 
+
+# on nomme les rangées et colonnes pour se faciliter la tâche visuellement:
+rownames(transMx) <- etats 
+colnames(transMx) <- etats
+transMx
