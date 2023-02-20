@@ -3,16 +3,13 @@ Auteurs: Jonathan Rondeau-Leclaire, Chloé Girard
 PROGRAMME chargement_données
 LIRE quadrats.txt
 
-ECRIRE etats
-
-ECRIRE etat_0()
 SI (abba > 0 | piru > 0) & acsa==0 & beal==0 & acpe==0 & fagr==0
-	ALORS etat = "B"
+	ALORS etat <- "B"
 	SINON SI abba==0 & piru==0 & (acsa>0 | beal>0 | acpe>0 | fagr>0)
-		ALORS etat = "T"
+		ALORS etat <- "T"
 		SINON SI (abba > 0 | piru > 0) & (acsa>0 | beal>0 | acpe>0 | fagr>0)
-			ALORS etat = "M"
-			SINON etat = "R"
+			ALORS etat <- "M"
+			SINON etat <- "R"
 FIN
 
 LIRE matrice_transitions.txt
