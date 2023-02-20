@@ -10,7 +10,7 @@ SI (abba > 0 | piru > 0) & acsa==0 & beal==0 & acpe==0 & fagr==0
 		SINON SI (abba > 0 | piru > 0) & (acsa>0 | beal>0 | acpe>0 | fagr>0)
 			ALORS etat_0 <- "M"
 			SINON etat_0 <- "R"
-FIN
+FIN SI
 
 
 PROGRAMME fonction_etat	  
@@ -26,26 +26,19 @@ etat.fun()
 PROGRAMME simul.fun2
 # Fonction pour simuler N pas de temps
 
-fonction.simululation(N)	   
+fonction.simululation(N, etat_0)	   
 	DEFINIR matriceComposition
 	LIRE etat_0
 	observation <- longueur(etat_0)
 	POUR i <- 1, N, PAS 1
 		POUR j <- 1, observation, PAS 1
-		etat_1 <- etat.fun(etat_0)
-		
-		
-		
-		RETOURNER ???
-ECRIRE simulation_10
-ECRIRE simulation_100
-	
-		
+			etat_i <- etat.fun(etat_0)
+		FIN POUR
+		DEFINIR composition
+		composition_i <- etat_i
+	FIN POUR
+	matriceComposition <- composition_i
+	RETOURNER matriceComposition
 
-*****	
-Entier Matrice (N, mX)
-POUR compteur <- 0, N, PAS 1
-etatTMatrice <- etat.fun(etatT)
-???????????
-FIN
-*****
+fonction.simulation(N=10, etat_0)
+fonction.simulation(N=100, etat_0)
