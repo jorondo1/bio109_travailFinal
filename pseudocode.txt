@@ -1,7 +1,11 @@
 Auteurs: Jonathan Rondeau-Leclaire, Chloé Girard
 
-PROGRAMME etats
+PROGRAMME etat_0
 LIRE quadrats.txt
+
+ECRIRE etats
+
+ECRIRE etat_0()
 SI (abba > 0 | piru > 0) & acsa==0 & beal==0 & acpe==0 & fagr==0
 	ALORS etat = "B"
 	SINON SI abba==0 & piru==0 & (acsa>0 | beal>0 | acpe>0 | fagr>0)
@@ -9,21 +13,34 @@ SI (abba > 0 | piru > 0) & acsa==0 & beal==0 & acpe==0 & fagr==0
 		SINON SI (abba > 0 | piru > 0) & (acsa>0 | beal>0 | acpe>0 | fagr>0)
 			ALORS etat = "M"
 			SINON etat = "R"
-ECRIRE etats
 FIN
 
 
-PROGRAMME fonctionEtat
-LIRE etats
-LIRE matrice_transitions.txt
-etats.fun()
-	# Fonction pour tirer au hasard l'état t+1
-	Caractère (etat_0)
-	DRAW etatT1 ou COMPUTE N_t1 # dans les notes de cours c'est écrit d'utiliser DRAW, mais dans la page de dépôt c'est écrit COMPUTE N_t1
-	RETOURNER etatT
 
-simulation.fun()
-	Fonction pour simuler N pas de temps
+PROGRAMME transmx
+LIRE matrice_transitions.txt
+ECRIRE transmx
+
+
+
+PROGRAMME fonctionEtat	   # Fonction pour tirer au hasard l'état t+1
+ECRIRE etat.fun()
+	DEFINIR p
+	DEFINIR res
+RETOURNER etat
+	
+	
+*****
+DRAW etatT1 ou COMPUTE N_t1 # dans les notes de cours c'est écrit d'utiliser DRAW, mais dans la page de dépôt c'est écrit COMPUTE N_t1
+*****
+
+
+PROGRAMME simul.fun2
+ECRIRE simul.fun2()	   # Fonction pour simuler N pas de temps
+
+	
+	
+	
 	Entier Matrice (N, mX)
 	POUR compteur <- 0, N, PAS 1
 		etatTMatrice <- etat.fun(etatT)
