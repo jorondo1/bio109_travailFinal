@@ -42,7 +42,9 @@ ECRIRE simul.fun2()	   # Fonction pour simuler N pas de temps
 			}
 			DEFINIR t+1
 		DEFINIR pas_t comme t+1
-	RETOURNER
+	RETOURNER ???
+ECRIRE simulation_10
+ECRIRE simulation_100
 	
 		
 
