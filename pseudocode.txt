@@ -28,8 +28,7 @@ ECRIRE etat.fun()
 	DEFINIR p
 	DEFINIR res
 RETOURNER etat
-	
-	
+		
 *****
 DRAW etatT1 ou COMPUTE N_t1 # dans les notes de cours c'est écrit d'utiliser DRAW, mais dans la page de dépôt c'est écrit COMPUTE N_t1
 *****
@@ -37,12 +36,18 @@ DRAW etatT1 ou COMPUTE N_t1 # dans les notes de cours c'est écrit d'utiliser DR
 
 PROGRAMME simul.fun2
 ECRIRE simul.fun2()	   # Fonction pour simuler N pas de temps
+	SEED (123)
+		DEFINIR composition
+		DEFINIR pas_t
+		DEFINIR liste_pas
+			POUR i in 1:(N) {
+			POUR j in 1:longueur(pas_t)
 
-	
-	
-	
-	Entier Matrice (N, mX)
-	POUR compteur <- 0, N, PAS 1
-		etatTMatrice <- etat.fun(etatT)
-		???????????
-	FIN
+
+*****	
+Entier Matrice (N, mX)
+POUR compteur <- 0, N, PAS 1
+etatTMatrice <- etat.fun(etatT)
+???????????
+FIN
+*****
